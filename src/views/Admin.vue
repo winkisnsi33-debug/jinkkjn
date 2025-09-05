@@ -300,6 +300,204 @@
                     />
                   </div>
                   
+                  <!-- Ausstattung Section -->
+                  <div class="border-t pt-6">
+                    <h4 class="text-lg font-semibold text-gray-900 mb-4">Ausstattung</h4>
+                    
+                    <!-- Grundausstattung Checkboxes -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-4">
+                      <label class="flex items-center">
+                        <input 
+                          type="checkbox" 
+                          v-model="newProperty.features" 
+                          value="Einbauküche"
+                          class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                        <span class="ml-2 text-sm text-gray-700">Einbauküche</span>
+                      </label>
+                      
+                      <label class="flex items-center">
+                        <input 
+                          type="checkbox" 
+                          v-model="newProperty.features" 
+                          value="Balkon/Terrasse"
+                          class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                        <span class="ml-2 text-sm text-gray-700">Balkon/Terrasse</span>
+                      </label>
+                      
+                      <label class="flex items-center">
+                        <input 
+                          type="checkbox" 
+                          v-model="newProperty.features" 
+                          value="Garten"
+                          class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                        <span class="ml-2 text-sm text-gray-700">Garten</span>
+                      </label>
+                      
+                      <label class="flex items-center">
+                        <input 
+                          type="checkbox" 
+                          v-model="newProperty.features" 
+                          value="Aufzug"
+                          class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                        <span class="ml-2 text-sm text-gray-700">Aufzug</span>
+                      </label>
+                      
+                      <label class="flex items-center">
+                        <input 
+                          type="checkbox" 
+                          v-model="newProperty.features" 
+                          value="Keller"
+                          class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                        <span class="ml-2 text-sm text-gray-700">Keller</span>
+                      </label>
+                      
+                      <label class="flex items-center">
+                        <input 
+                          type="checkbox" 
+                          v-model="newProperty.features" 
+                          value="Möbliert"
+                          class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                        <span class="ml-2 text-sm text-gray-700">Möbliert</span>
+                      </label>
+                      
+                      <label class="flex items-center">
+                        <input 
+                          type="checkbox" 
+                          v-model="newProperty.features" 
+                          value="Fußbodenheizung"
+                          class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                        <span class="ml-2 text-sm text-gray-700">Fußbodenheizung</span>
+                      </label>
+                      
+                      <label class="flex items-center">
+                        <input 
+                          type="checkbox" 
+                          v-model="newProperty.features" 
+                          value="Klimaanlage"
+                          class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                        <span class="ml-2 text-sm text-gray-700">Klimaanlage</span>
+                      </label>
+                      
+                      <label class="flex items-center">
+                        <input 
+                          type="checkbox" 
+                          v-model="newProperty.features" 
+                          value="Kamin"
+                          class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                        <span class="ml-2 text-sm text-gray-700">Kamin</span>
+                      </label>
+                    </div>
+                    
+                    <!-- Parkplatz Dropdown -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Parkplatz</label>
+                        <select 
+                          v-model="newProperty.details.parking" 
+                          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        >
+                          <option value="">Kein Parkplatz</option>
+                          <option value="Tiefgarage">Tiefgarage</option>
+                          <option value="Carport">Carport</option>
+                          <option value="Stellplatz">Stellplatz</option>
+                          <option value="Garage">Garage</option>
+                          <option value="Straßenparkplatz">Straßenparkplatz</option>
+                        </select>
+                      </div>
+                      
+                      <!-- Heizung Dropdown -->
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Heizung</label>
+                        <select 
+                          v-model="newProperty.details.heating" 
+                          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        >
+                          <option value="">Heizungsart wählen</option>
+                          <option value="Gasheizung">Gasheizung</option>
+                          <option value="Fernwärme">Fernwärme</option>
+                          <option value="Ölheizung">Ölheizung</option>
+                          <option value="Wärmepumpe">Wärmepumpe</option>
+                          <option value="Fußbodenheizung">Fußbodenheizung</option>
+                          <option value="Elektroheizung">Elektroheizung</option>
+                        </select>
+                      </div>
+                    </div>
+                    
+                    <!-- Baujahr und Zustand -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Baujahr</label>
+                        <input 
+                          v-model="newProperty.details.yearBuilt" 
+                          type="number" 
+                          min="1800"
+                          max="2030"
+                          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          placeholder="z.B. 2020"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Zustand</label>
+                        <select 
+                          v-model="newProperty.details.condition" 
+                          class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        >
+                          <option value="">Zustand wählen</option>
+                          <option value="Neubau">Neubau</option>
+                          <option value="Neuwertig">Neuwertig</option>
+                          <option value="Sehr gut">Sehr gut</option>
+                          <option value="Gut">Gut</option>
+                          <option value="Renoviert">Renoviert</option>
+                          <option value="Renovierungsbedürftig">Renovierungsbedürftig</option>
+                          <option value="Sanierungsbedürftig">Sanierungsbedürftig</option>
+                        </select>
+                      </div>
+                    </div>
+                    
+                    <!-- Zusätzliche Features -->
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700 mb-2">Zusätzliche Ausstattung</label>
+                      <div class="space-y-2">
+                        <div 
+                          v-for="(feature, index) in additionalFeatures" 
+                          :key="index"
+                          class="flex items-center space-x-2"
+                        >
+                          <input 
+                            v-model="additionalFeatures[index]" 
+                            type="text" 
+                            class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                            placeholder="z.B. Smart Home System"
+                          />
+                          <button 
+                            @click="removeAdditionalFeature(index)"
+                            type="button"
+                            class="px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                        <button 
+                          @click="addAdditionalFeature"
+                          type="button"
+                          class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors text-sm"
+                        >
+                          + Weitere Ausstattung hinzufügen
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  
                   <button 
                     type="submit" 
                     :disabled="loading"
@@ -594,6 +792,9 @@ const error = ref('')
 const totalViews = ref(1247)
 const totalInquiries = ref(23)
 
+// Additional features for properties
+const additionalFeatures = ref([''])
+
 // Login form
 const loginForm = ref({
   username: '',
@@ -618,7 +819,12 @@ const newProperty = ref({
     email: 'info@immobilienmakler.de',
     phone: '+49 89 123 456'
   },
-  details: {}
+  details: {
+    parking: '',
+    heating: '',
+    yearBuilt: '',
+    condition: ''
+  }
 })
 
 // Companies data
@@ -697,7 +903,19 @@ async function addProperty() {
   try {
     loading.value = true
     error.value = ''
-    await propertiesAPI.create(newProperty.value)
+    
+    // Combine standard features with additional features
+    const allFeatures = [
+      ...newProperty.value.features,
+      ...additionalFeatures.value.filter(f => f.trim() !== '')
+    ]
+    
+    const propertyData = {
+      ...newProperty.value,
+      features: allFeatures
+    }
+    
+    await propertiesAPI.create(propertyData)
     await loadProperties()
     
     // Reset form
@@ -715,8 +933,16 @@ async function addProperty() {
         email: 'info@immobilienmakler.de',
         phone: '+49 89 123 456'
       },
-      details: {}
+      details: {
+        parking: '',
+        heating: '',
+        yearBuilt: '',
+        condition: ''
+      }
     }
+    
+    // Reset additional features
+    additionalFeatures.value = ['']
     
     // Show success message
     alert('Immobilie erfolgreich hinzugefügt!')
@@ -816,6 +1042,17 @@ async function deleteCompany(id: number) {
     alert('Fehler beim Löschen des Unternehmens')
   } finally {
     loading.value = false
+  }
+}
+
+// Additional features functions
+const addAdditionalFeature = () => {
+  additionalFeatures.value.push('')
+}
+
+const removeAdditionalFeature = (index) => {
+  if (additionalFeatures.value.length > 1) {
+    additionalFeatures.value.splice(index, 1)
   }
 }
 </script>
