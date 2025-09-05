@@ -3,6 +3,8 @@ const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -12,6 +14,37 @@ const JWT_SECRET = 'your-secret-key-change-in-production';
 app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+
+// Ensure data directory exists
+const dataDir = path.join(__dirname, 'data');
+if (!fs.existsSync(dataDir)) {
+  fs.mkdirSync(dataDir, { recursive: true });
+}
+
+// Ensure companies.json exists
+const companiesFile = path.join(dataDir, 'companies.json');
+if (!fs.existsSync(companiesFile)) {
+  fs.writeFileSync(companiesFile, JSON.stringify([], null, 2));
+}
+
+// Load companies from file
+let companies = [];
+try {
+  const companiesData = fs.readFileSync(companiesFile, 'utf8');
+  companies = JSON.parse(companiesData);
+} catch (error) {
+  console.log('Creating new companies file...');
+  companies = [];
+}
+
+// Save companies to file
+const saveCompanies = () => {
+  try {
+    fs.writeFileSync(companiesFile, JSON.stringify(companies, null, 2));
+  } catch (error) {
+    console.error('Error saving companies:', error);
+  }
+};
 
 // In-memory storage (in production, use a real database)
 let properties = [
@@ -86,61 +119,65 @@ let properties = [
   }
 ];
 
-let companies = [
-  {
-    id: 1,
-    name: 'TechStart GmbH',
-    industry: 'Software Development',
-    location: 'München-Maxvorstadt',
-    employees: '25-50',
-    founded: '2019',
-    revenue: '2.5M',
-    images: ['/WhatsApp Image 2025-09-01 at 21.28.14.jpeg'],
-    description: 'Innovative Software-Entwicklung für digitale Lösungen im B2B-Bereich',
-    highlights: [
-      'Agile Entwicklungsmethoden',
-      'Cloud-native Architektur',
-      'Internationale Kunden',
-      'Starkes Wachstum (+40% p.a.)'
-    ],
-    contact: {
-      email: 'info@techstart.de',
-      phone: '+49 89 123 456'
+// Initialize companies with default data if empty
+if (companies.length === 0) {
+  companies = [
+    {
+      id: 1,
+      name: 'TechStart GmbH',
+      industry: 'Software Development',
+      location: 'München-Maxvorstadt',
+      employees: '25-50',
+      founded: '2019',
+      revenue: '2.5M',
+      images: ['/WhatsApp Image 2025-09-01 at 21.28.14.jpeg'],
+      description: 'Innovative Software-Entwicklung für digitale Lösungen im B2B-Bereich',
+      highlights: [
+        'Agile Entwicklungsmethoden',
+        'Cloud-native Architektur',
+        'Internationale Kunden',
+        'Starkes Wachstum (+40% p.a.)'
+      ],
+      contact: {
+        email: 'info@techstart.de',
+        phone: '+49 89 123 456'
+      },
+      details: {
+        website: 'www.techstart.de',
+        legalForm: 'GmbH',
+        specialties: ['SaaS-Entwicklung', 'Mobile Apps', 'Cloud-Integration'],
+        certifications: ['ISO 27001', 'GDPR-konform']
+      }
     },
-    details: {
-      website: 'www.techstart.de',
-      legalForm: 'GmbH',
-      specialties: ['SaaS-Entwicklung', 'Mobile Apps', 'Cloud-Integration'],
-      certifications: ['ISO 27001', 'GDPR-konform']
+    {
+      id: 2,
+      name: 'Baumeister & Co KG',
+      industry: 'Baugewerbe',
+      location: 'München-Sendling',
+      employees: '100-200',
+      founded: '1995',
+      revenue: '15M',
+      images: ['/WhatsApp Image 2025-09-01 at 21.33.23.jpeg'],
+      description: 'Traditionelles Bauunternehmen mit moderner Ausrichtung und nachhaltigen Konzepten',
+      highlights: [
+        '30 Jahre Erfahrung',
+        'Nachhaltige Bauweise',
+        'Komplettlösungen',
+        'Zertifizierte Qualität'
+      ],
+      contact: {
+        email: 'kontakt@baumeister-co.de',
+        phone: '+49 89 234 567'
+      },
+      details: {
+        legalForm: 'KG',
+        specialties: ['Wohnungsbau', 'Gewerbebau', 'Sanierung'],
+        certifications: ['DGNB Gold', 'Handwerkskammer München']
+      }
     }
-  },
-  {
-    id: 2,
-    name: 'Baumeister & Co KG',
-    industry: 'Baugewerbe',
-    location: 'München-Sendling',
-    employees: '100-200',
-    founded: '1995',
-    revenue: '15M',
-    images: ['/WhatsApp Image 2025-09-01 at 21.33.23.jpeg'],
-    description: 'Traditionelles Bauunternehmen mit moderner Ausrichtung und nachhaltigen Konzepten',
-    highlights: [
-      '30 Jahre Erfahrung',
-      'Nachhaltige Bauweise',
-      'Komplettlösungen',
-      'Zertifizierte Qualität'
-    ],
-    contact: {
-      email: 'kontakt@baumeister-co.de',
-      phone: '+49 89 234 567'
-    },
-    details: {
-      legalForm: 'KG',
-      specialties: ['Wohnungsbau', 'Gewerbebau', 'Sanierung'],
-      certifications: ['DGNB Gold', 'Handwerkskammer München']
-    }
-  }
-];
+  ];
+  saveCompanies();
+}
 
 // Admin credentials (in production, store hashed passwords in database)
 const adminCredentials = {
@@ -279,6 +316,7 @@ app.post('/api/companies', authenticateToken, (req, res) => {
     };
     
     companies.push(newCompany);
+    saveCompanies();
     res.status(201).json(newCompany);
   } catch (error) {
     console.error('Error creating company:', error);
@@ -296,6 +334,7 @@ app.put('/api/companies/:id', authenticateToken, (req, res) => {
     }
     
     companies[index] = { ...companies[index], ...req.body, id };
+    saveCompanies();
     res.json(companies[index]);
   } catch (error) {
     console.error('Error updating company:', error);
@@ -313,6 +352,7 @@ app.delete('/api/companies/:id', authenticateToken, (req, res) => {
     }
     
     companies.splice(index, 1);
+    saveCompanies();
     res.status(204).send();
   } catch (error) {
     console.error('Error deleting company:', error);
